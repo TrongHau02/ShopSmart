@@ -47,7 +47,7 @@ public class UserController {
 
     @RequestMapping(value = "/admin/user/{id}", method = RequestMethod.GET)
     public String getUserById(Model model, @PathVariable("id") long id) {
-        model.addAttribute("id", id);
+        model.addAttribute("user", this.userService.getUserById(id));
         return "admin/user/user-detail";
     }
 }
