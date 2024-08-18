@@ -1,11 +1,11 @@
 package com.javaweb.controller;
 
 import com.javaweb.domain.User;
-import com.javaweb.repository.UserRepository;
 import com.javaweb.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -43,5 +43,11 @@ public class UserController {
     public String createUserPage(Model model, @ModelAttribute("newUser") User newUser ) {
         this.userService.handleSaveUser(newUser);
         return "redirect:/admin/user";
+    }
+
+    @RequestMapping(value = "/admin/user/{id}", method = RequestMethod.GET)
+    public String getUserById(Model model, @PathVariable("id") long id) {
+        model.addAttribute("id", id);
+        return "admin/user/user-detail";
     }
 }
