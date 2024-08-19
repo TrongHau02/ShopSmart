@@ -33,6 +33,8 @@
           <li class="list-group-item">Address: ${user.address}</li>
         </ul>
       </div>
+      <hr/>
+      <a onclick="history.back()" class="btn btn-success">Back</a>
     </div>
   </div>
 </div>
