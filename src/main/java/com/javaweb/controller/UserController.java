@@ -4,10 +4,7 @@ import com.javaweb.domain.User;
 import com.javaweb.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -48,6 +45,38 @@ public class UserController {
     @RequestMapping(value = "/admin/user/{id}", method = RequestMethod.GET)
     public String getUserById(Model model, @PathVariable("id") long id) {
         model.addAttribute("user", this.userService.getUserById(id));
-        return "admin/user/user-detail";
+        return "admin/user/detail";
+    }
+
+    @GetMapping(value = "/admin/user/update/{id}")
+    public String getUpdateUserPage(Model model, @PathVariable("id") long id) {
+        User currentUser = this.userService.getUserById(id);
+        model.addAttribute("newUser", currentUser);
+        return "admin/user/update";
+    }
+
+    @PostMapping(value = "/admin/user/update")
+    public String updateUserPage(Model model, @ModelAttribute("newUser") User newUser) {
+        User currentUser = this.userService.getUserById(newUser.getId());
+        if (currentUser != null) {
+            currentUser.setFullName(newUser.getFullName());
+            currentUser.setPhone(newUser.getPhone());
+            currentUser.setAddress(newUser.getAddress());
+            this.userService.handleSaveUser(currentUser);
+        }
+        return "redirect:/admin/user";
+    }
+
+    @GetMapping(value = "/admin/user/delete/{id}")
+    public String getDeleteUserPage(Model model, @PathVariable("id") long id) {
+        model.addAttribute("id", id);
+        model.addAttribute("newUser", new User());
+        return "admin/user/delete";
+    }
+
+    @PostMapping(value = "/admin/user/delete")
+    public String deleteUserPage(@ModelAttribute("newUser") User user) {
+        this.userService.handleDeleteUser(user.getId());
+        return "redirect:/admin/user";
     }
 }
