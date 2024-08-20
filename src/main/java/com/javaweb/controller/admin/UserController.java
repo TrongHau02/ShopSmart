@@ -1,4 +1,4 @@
-package com.javaweb.controller;
+package com.javaweb.controller.admin;
 
 import com.javaweb.domain.User;
 import com.javaweb.service.UserService;
@@ -27,7 +27,7 @@ public class UserController {
     public String getUserPage(Model model) {
         List<User> arrUsers = this.userService.getAllUsers();
         model.addAttribute("users", arrUsers);
-        return "admin/user/table-user";
+        return "admin/user/home";
     }
 
     @RequestMapping(value = "/admin/user/create")
