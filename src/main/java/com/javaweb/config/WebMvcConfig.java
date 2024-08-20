@@ -24,8 +24,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
         WebMvcConfigurer.super.configureViewResolvers(registry);
     }
 
-   /* @Override
+    @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/template/**").addResourceLocations("/template/");
-    }*/
+        registry.addResourceHandler("/css/**").addResourceLocations("/resources/css/");
+        registry.addResourceHandler("/js/**").addResourceLocations("/resources/js/");
+        registry.addResourceHandler("/assets/**").addResourceLocations("/resources/assets/");
+    }
 }
