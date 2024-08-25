@@ -1,28 +1,30 @@
 package com.javaweb.controller.admin;
 
 import com.javaweb.domain.User;
+import com.javaweb.service.RoleService;
 import com.javaweb.service.UploadService;
 import com.javaweb.service.UserService;
-import jakarta.servlet.ServletContext;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 @Controller
 public class UserController {
     private final UserService userService;
     private final UploadService uploadService;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
-    public UserController(UserService userService, UploadService uploadService) {
+    public UserController(UserService userService, UploadService uploadService, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userService = userService;
         this.uploadService = uploadService;
+        this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     @GetMapping("/")
@@ -49,7 +51,11 @@ public class UserController {
     @PostMapping(value = "/admin/user/create")
     public String createUserPage(Model model, @ModelAttribute("newUser") User newUser, @RequestParam("avatarFile") MultipartFile file) {
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
-        //this.userService.handleSaveUser(newUser);
+        String hashPassword = this.passwordEncoder.encode(newUser.getPassword());
+        newUser.setAvatar(avatar);
+        newUser.setPassword(hashPassword);
+        newUser.setRole(roleService.findRoleByName(newUser.getRole().getName()));
+        this.userService.handleSaveUser(newUser);
         return "redirect:/admin/user";
     }
 
