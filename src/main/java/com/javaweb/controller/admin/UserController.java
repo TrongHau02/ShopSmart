@@ -1,21 +1,31 @@
 package com.javaweb.controller.admin;
 
 import com.javaweb.domain.User;
+import com.javaweb.service.UploadService;
 import com.javaweb.service.UserService;
+import jakarta.servlet.ServletContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
 public class UserController {
     private final UserService userService;
-    public UserController(UserService userService) {
+    private final UploadService uploadService;
+
+    public UserController(UserService userService, UploadService uploadService) {
         this.userService = userService;
+        this.uploadService = uploadService;
     }
 
-    @RequestMapping("/")
+    @GetMapping("/")
     public String getHomePage(Model model) {
         List<User> arrUsers = this.userService.getAllUsers();
         System.out.println(arrUsers);
@@ -23,26 +33,27 @@ public class UserController {
         return "hello";
     }
 
-    @RequestMapping(value = "/admin/user")
+    @GetMapping(value = "/admin/user")
     public String getUserPage(Model model) {
         List<User> arrUsers = this.userService.getAllUsers();
         model.addAttribute("users", arrUsers);
         return "admin/user/home";
     }
 
-    @RequestMapping(value = "/admin/user/create")
+    @GetMapping(value = "/admin/user/create")
     public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new User());
         return "admin/user/create";
     }
 
-    @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
-    public String createUserPage(Model model, @ModelAttribute("newUser") User newUser ) {
-        this.userService.handleSaveUser(newUser);
+    @PostMapping(value = "/admin/user/create")
+    public String createUserPage(Model model, @ModelAttribute("newUser") User newUser, @RequestParam("avatarFile") MultipartFile file) {
+        String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+        //this.userService.handleSaveUser(newUser);
         return "redirect:/admin/user";
     }
 
-    @RequestMapping(value = "/admin/user/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/admin/user/{id}")
     public String getUserById(Model model, @PathVariable("id") long id) {
         model.addAttribute("user", this.userService.getUserById(id));
         return "admin/user/detail";
@@ -79,4 +90,6 @@ public class UserController {
         this.userService.handleDeleteUser(user.getId());
         return "redirect:/admin/user";
     }
+
+
 }
