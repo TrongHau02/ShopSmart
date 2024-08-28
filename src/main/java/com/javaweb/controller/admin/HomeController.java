@@ -3,10 +3,10 @@ package com.javaweb.controller.admin;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+@Controller(value = "homeControllerOfAdmin")
 public class HomeController {
-    @GetMapping(value = {"/", "/admin"})
+    @GetMapping(value = {"/admin/home"})
     public String getHomePage() {
-        return "/admin/dashboard/home";
+        return "admin/dashboard/home";
     }
 }
