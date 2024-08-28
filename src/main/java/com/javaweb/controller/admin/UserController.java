@@ -4,10 +4,12 @@ import com.javaweb.domain.User;
 import com.javaweb.service.RoleService;
 import com.javaweb.service.UploadService;
 import com.javaweb.service.UserService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -27,14 +29,6 @@ public class UserController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/")
-    public String getHomePage(Model model) {
-        List<User> arrUsers = this.userService.getAllUsers();
-        System.out.println(arrUsers);
-        model.addAttribute("eric", "test");
-        return "hello";
-    }
-
     @GetMapping(value = "/admin/user")
     public String getUserPage(Model model) {
         List<User> arrUsers = this.userService.getAllUsers();
@@ -49,7 +43,12 @@ public class UserController {
     }
 
     @PostMapping(value = "/admin/user/create")
-    public String createUserPage(Model model, @ModelAttribute("newUser") User newUser, @RequestParam("avatarFile") MultipartFile file) {
+    public String createUserPage(Model model, @Valid @ModelAttribute("newUser") User newUser, BindingResult bindingResult, @RequestParam("avatarFile") MultipartFile file) {
+        List<FieldError> errors = bindingResult.getFieldErrors();
+        for (FieldError error : errors) {
+            System.out.println(error.getObjectName() + "-" + error.getDefaultMessage());
+        }
+
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(newUser.getPassword());
         newUser.setAvatar(avatar);
@@ -73,12 +72,15 @@ public class UserController {
     }
 
     @PostMapping(value = "/admin/user/update")
-    public String updateUserPage(Model model, @ModelAttribute("newUser") User newUser) {
+    public String updateUserPage(Model model, @ModelAttribute("newUser") User newUser, @RequestParam("avatarFile") MultipartFile file) {
         User currentUser = this.userService.getUserById(newUser.getId());
         if (currentUser != null) {
             currentUser.setFullName(newUser.getFullName());
             currentUser.setPhone(newUser.getPhone());
             currentUser.setAddress(newUser.getAddress());
+            currentUser.setRole(roleService.findRoleByName(newUser.getRole().getName()));
+            String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+            currentUser.setAvatar(avatar);
             this.userService.handleSaveUser(currentUser);
         }
         return "redirect:/admin/user";
