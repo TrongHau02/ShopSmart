@@ -45,15 +45,17 @@
                                     <th scope="col">ID</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Full Name</th>
+                                    <th scope="col">Role</th>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <c:forEach var="user" items="${users}">
                                     <tr>
-                                        <th scope="row">${user.id}</th>
+                                        <th scope="row" class="text-center">${user.id}</th>
                                         <td>${user.email}</td>
                                         <td>${user.fullName}</td>
+                                        <td class="text-center">${user.role.name}</td>
                                         <td>
                                             <div class="d-flex justify-content-evenly ">
                                                 <a href="/admin/user/${user.id}" class="btn btn-success">View</a>
