@@ -6,13 +6,13 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
-    <meta name="author" content="Hỏi Dân IT" />
-    <title>Create User</title>
-    <link href="/css/styles.css" rel="stylesheet" />
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content="Hỏi Dân IT - Dự án laptopshop"/>
+    <meta name="author" content="Hỏi Dân IT"/>
+    <title>Update User</title>
+    <link href="/css/styles.css" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 
@@ -34,29 +34,62 @@
                         <div class="col-md-6 col-12 mx-auto">
                             <h3>Update user with id = ${newUser.id}</h3>
                             <hr/>
-                            <form:form action="/admin/user/update" method="POST" modelAttribute="newUser">
+                            <form:form action="/admin/user/update" method="POST"
+                                       modelAttribute="newUser" class="row"
+                                       enctype="multipart/form-data">
                                 <div class="mb-3" style="display: none">
                                     <label class="form-label">Id:</label>
                                     <form:input type="id" class="form-control" path="id"/>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 col-12">
                                     <label class="form-label">Email:</label>
                                     <form:input type="email" class="form-control" path="email" disabled="true"/>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Phone number:</label>
-                                    <form:input type="text" class="form-control" path="phone"/>
-                                </div>
-                                <div class="mb-3">
+                                <div class="mb-3 col-12 col-md-6">
                                     <label class="form-label">Full Name:</label>
                                     <form:input type="text" class="form-control" path="fullName"/>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label class="form-label">Phone number:</label>
+                                    <form:input type="text" class="form-control" path="phone"/>
+                                </div>
+                                <div class="mb-3 col-12">
                                     <label class="form-label">Address:</label>
                                     <form:input type="text" class="form-control" path="address"/>
                                 </div>
-
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label class="form-label">Role:</label>
+                                    <form:select class="form-select" path="role.name">
+                                        <c:if test="${newUser.role.name.equals('ADMIN')}">
+                                            <form:option value="ADMIN" selected="selected">ADMIN</form:option>
+                                            <form:option value="USER">USER</form:option>
+                                        </c:if>
+                                        <c:if test="${newUser.role.name.equals('USER')}">
+                                            <form:option value="ADMIN">ADMIN</form:option>
+                                            <form:option value="USER" selected="selected">USER</form:option>
+                                        </c:if>
+                                    </form:select>
+                                </div>
+                                <div class="mb-3 col-12 col-md-6">
+                                    <label for="avatarFile" class="form-label">Avatar:</label>
+                                    <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg"
+                                           name="avatarFile"/>
+                                </div>
+                                <c:if test="${not empty newUser.avatar}">
+                                    <div class="col-12 mb-3">
+                                        <img style="max-height: 250px" alt="avatar preview" src="<c:url value="/images/avatar/${newUser.avatar}"/>"
+                                             id="avatarPreview"/>
+                                    </div>
+                                </c:if>
+                                <c:if test="${empty newUser.avatar}">
+                                    <div class="col-12 mb-3">
+                                        <img style="max-height: 250px; display: none;" alt="avatar preview"
+                                             id="avatarPreview"/>
+                                    </div>
+                                </c:if>
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary">Update</button>
+                                </div>
                             </form:form>
                         </div>
 
@@ -68,6 +101,18 @@
         <jsp:include page="../layout/footer.jsp"/>
     </div>
 </div>
+<script
+        src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    $(document).ready(() => {
+        const avatarFile = $("#avatarFile");
+        avatarFile.change(function (e) {
+            const imgURL = URL.createObjectURL(e.target.files[0]);
+            $("#avatarPreview").attr("src", imgURL);
+            $("#avatarPreview").css({"display": "block"});
+        });
+    });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
 <script src="/js/scripts.js"></script>
