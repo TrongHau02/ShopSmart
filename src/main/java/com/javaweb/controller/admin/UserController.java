@@ -1,5 +1,6 @@
 package com.javaweb.controller.admin;
 
+import com.javaweb.domain.Role;
 import com.javaweb.domain.User;
 import com.javaweb.service.RoleService;
 import com.javaweb.service.UploadService;
@@ -38,17 +39,22 @@ public class UserController {
 
     @GetMapping(value = "/admin/user/create")
     public String getCreateUserPage(Model model) {
+        model.addAttribute("roles", this.roleService.findAll());
         model.addAttribute("newUser", new User());
         return "admin/user/create";
     }
 
     @PostMapping(value = "/admin/user/create")
-    public String createUserPage(Model model, @Valid @ModelAttribute("newUser") User newUser, BindingResult bindingResult, @RequestParam("avatarFile") MultipartFile file) {
-        List<FieldError> errors = bindingResult.getFieldErrors();
+    public String createUserPage(Model model, @Valid @ModelAttribute("newUser") User newUser,
+                                 BindingResult newUserBindingResult, @RequestParam("avatarFile") MultipartFile file) {
+        List<FieldError> errors = newUserBindingResult.getFieldErrors();
         for (FieldError error : errors) {
-            System.out.println(error.getObjectName() + "-" + error.getDefaultMessage());
+            System.out.println(">>>>>>" + error.getField() + "-" + error.getDefaultMessage());
         }
 
+        if (newUserBindingResult.hasErrors()) {
+            return "admin/user/create";
+        }
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(newUser.getPassword());
         newUser.setAvatar(avatar);
@@ -68,11 +74,19 @@ public class UserController {
     public String getUpdateUserPage(Model model, @PathVariable("id") long id) {
         User currentUser = this.userService.getUserById(id);
         model.addAttribute("newUser", currentUser);
+        model.addAttribute("roles", this.roleService.findAll());
         return "admin/user/update";
     }
 
     @PostMapping(value = "/admin/user/update")
-    public String updateUserPage(Model model, @ModelAttribute("newUser") User newUser, @RequestParam("avatarFile") MultipartFile file) {
+    public String updateUserPage(Model model, @Valid @ModelAttribute("newUser") User newUser,
+                                 BindingResult newUserBindingResult,
+                                 @RequestParam("avatarFile") MultipartFile file) {
+        if (newUserBindingResult.hasErrors()) {
+            model.addAttribute("newUser", newUser);
+            model.addAttribute("roles", this.roleService.findAll());
+            return "admin/user/update";
+        }
         User currentUser = this.userService.getUserById(newUser.getId());
         if (currentUser != null) {
             currentUser.setFullName(newUser.getFullName());
@@ -98,6 +112,5 @@ public class UserController {
         this.userService.handleDeleteUser(user.getId());
         return "redirect:/admin/user";
     }
-
 
 }
