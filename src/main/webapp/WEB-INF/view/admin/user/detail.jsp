@@ -11,7 +11,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
   <meta name="author" content="Hỏi Dân IT" />
-  <title>Create User</title>
+  <title>Detail User</title>
   <link href="/css/styles.css" rel="stylesheet" />
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
@@ -25,7 +25,7 @@
       <div class="container-fluid px-4">
         <h1 class="mt-4">Management User</h1>
         <ol class="breadcrumb mb-4">
-          <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="/admin/home">Dashboard</a></li>
           <li class="breadcrumb-item"><a href="/admin/user">Users</a></li>
           <li class="breadcrumb-item active">Detail User</li>
         </ol>

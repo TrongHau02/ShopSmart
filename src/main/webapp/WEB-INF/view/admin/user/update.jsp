@@ -25,7 +25,7 @@
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Management User</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/home">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="/admin/user">Users</a></li>
                     <li class="breadcrumb-item active">Update User</li>
                 </ol>
@@ -43,11 +43,17 @@
                                 </div>
                                 <div class="mb-3 col-12">
                                     <label class="form-label">Email:</label>
-                                    <form:input type="email" class="form-control" path="email" disabled="true"/>
+                                    <form:input type="email" class="form-control" path="email" readonly="true"/>
                                 </div>
                                 <div class="mb-3 col-12 col-md-6">
+                                    <c:set var="errorName">
+                                        <form:errors path="fullName" cssClass="invalid-feedback"/>
+                                    </c:set>
                                     <label class="form-label">Full Name:</label>
-                                    <form:input type="text" class="form-control" path="fullName"/>
+                                    <form:input type="text"
+                                                class="form-control ${not empty errorName ? 'is-invalid' : ''}"
+                                                path="fullName"/>
+                                        ${errorName}
                                 </div>
                                 <div class="mb-3 col-12 col-md-6">
                                     <label class="form-label">Phone number:</label>
@@ -60,14 +66,17 @@
                                 <div class="mb-3 col-12 col-md-6">
                                     <label class="form-label">Role:</label>
                                     <form:select class="form-select" path="role.name">
-                                        <c:if test="${newUser.role.name.equals('ADMIN')}">
+                                        <c:forEach var="role" items="${roles}">
+                                            <form:option value="${role.name}">${role.name}</form:option>
+                                        </c:forEach>
+                                        <%--<c:if test="${newUser.role.name.equals('ADMIN')}">
                                             <form:option value="ADMIN" selected="selected">ADMIN</form:option>
                                             <form:option value="USER">USER</form:option>
                                         </c:if>
                                         <c:if test="${newUser.role.name.equals('USER')}">
                                             <form:option value="ADMIN">ADMIN</form:option>
                                             <form:option value="USER" selected="selected">USER</form:option>
-                                        </c:if>
+                                        </c:if>--%>
                                     </form:select>
                                 </div>
                                 <div class="mb-3 col-12 col-md-6">
@@ -77,7 +86,8 @@
                                 </div>
                                 <c:if test="${not empty newUser.avatar}">
                                     <div class="col-12 mb-3">
-                                        <img style="max-height: 250px" alt="avatar preview" src="<c:url value="/images/avatar/${newUser.avatar}"/>"
+                                        <img style="max-height: 250px" alt="avatar preview"
+                                             src="<c:url value="/images/avatar/${newUser.avatar}"/>"
                                              id="avatarPreview"/>
                                     </div>
                                 </c:if>

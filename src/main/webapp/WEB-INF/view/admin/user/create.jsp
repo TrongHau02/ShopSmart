@@ -25,48 +25,68 @@
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Management User</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/admin/home">Dashboard</a></li>
                     <li class="breadcrumb-item"><a href="/admin/user">Users</a></li>
                     <li class="breadcrumb-item active">Create User</li>
                 </ol>
                 <div class="mt-5">
                     <div class="row">
-                        <div class="col-md-6 col-12 mx-auto">
+                        <div class="col-md-8 col-12 mx-auto">
                             <h3>Create a user</h3>
                             <hr/>
                             <form:form action="/admin/user/create" method="POST"
                                        modelAttribute="newUser" class="row"
                                        enctype="multipart/form-data">
                                 <div class="mb-3 col-12 col-md-6">
-                                    <label class="form-label" path="email">Email:</label>
-                                    <form:input type="email" class="form-control" path="email"/>
+                                    <c:set var="errorEmail">
+                                        <form:errors path="email" cssClass="invalid-feedback"/>
+                                    </c:set>
+                                    <label class="form-label">Email:</label>
+                                    <form:input type="email"
+                                                class="form-control ${not empty errorEmail ? 'is-invalid' : ''}"
+                                                path="email"/>
+                                        ${errorEmail}
                                 </div>
                                 <div class="mb-3 col-12 col-md-6">
-                                    <label class="form-label" path="password">Password:</label>
-                                    <form:input type="password" class="form-control" path="password"/>
+                                    <c:set var="errorPassword">
+                                        <form:errors path="password" cssClass="invalid-feedback"/>
+                                    </c:set>
+                                    <label class="form-label">Password:</label>
+                                    <form:input type="password"
+                                                class="form-control ${not empty errorPassword ? 'is-invalid' : ''}"
+                                                path="password"/>
+                                        ${errorPassword}
                                 </div>
                                 <div class="mb-3 col-12 col-md-6">
-                                    <label class="form-label" path="phone">Phone number:</label>
+                                    <label class="form-label">Phone number:</label>
                                     <form:input type="text" class="form-control" path="phone"/>
                                 </div>
                                 <div class="mb-3 col-12 col-md-6">
-                                    <label class="form-label" path="fullName">Full Name:</label>
-                                    <form:input type="text" class="form-control" path="fullName"/>
+                                    <c:set var="errorFullName">
+                                        <form:errors path="fullName" cssClass="invalid-feedback"/>
+                                    </c:set>
+                                    <label class="form-label">Full Name:</label>
+                                    <form:input type="text"
+                                                class="form-control ${not empty errorFullName ? 'is-invalid' : ''}"
+                                                path="fullName"/>
+                                        ${errorFullName}
                                 </div>
                                 <div class="mb-3 col-12">
-                                    <label class="form-label" path="address">Address:</label>
+                                    <label class="form-label">Address:</label>
                                     <form:input type="text" class="form-control" path="address"/>
                                 </div>
                                 <div class="mb-3 col-12 col-md-6">
                                     <label class="form-label">Role:</label>
                                     <form:select class="form-select" path="role.name">
-                                        <form:option value="ADMIN">ADMIN</form:option>
-                                        <form:option value="USER">USER</form:option>
+                                        <c:forEach var="role" items="${roles}">
+                                            <form:option value="${role.name}">${role.name}</form:option>
+                                        </c:forEach>
                                     </form:select>
                                 </div>
                                 <div class="mb-3 col-12 col-md-6">
                                     <label for="avatarFile" class="form-label">Avatar:</label>
-                                    <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg" name="avatarFile"/>
+                                    <input class="form-control" type="file" id="avatarFile" accept=".png, .jpg, .jpeg"
+                                           name="avatarFile"/>
                                 </div>
                                 <div class="col-12 mb-3">
                                     <img style="max-height: 250px; display: none;" alt="avatar preview"
