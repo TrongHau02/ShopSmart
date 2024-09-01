@@ -1,10 +1,7 @@
 package com.javaweb.domain;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 
 import java.util.List;
 
@@ -16,15 +13,15 @@ public class User {
     private long id;
 
     @NotNull
-    @Email
+    @Email(message = "Email is not valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
 
     @NotNull
-    @Min(8)
+    @Size(min = 8, message = "Password tối thiểu 8 kí tự")
     private String password;
 
     @NotNull
-    @Min(2)
+    @Size(min = 3, message = "Độ dài tối thiểu 3 kí tự")
     private String fullName;
 
     private String address;

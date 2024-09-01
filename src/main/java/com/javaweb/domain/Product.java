@@ -1,8 +1,9 @@
 package com.javaweb.domain;
 
 import jakarta.persistence.*;
-
-import java.util.List;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "products")
@@ -10,14 +11,34 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotNull
+    @NotEmpty(message = "Vui lòng nhập vào tên sản phẩm")
     private String name;
+
+    @NotNull
+    @Min(value = 1000, message = "Vui lòng nhập giá lớn hơn 1000 VNĐ")
     private double price;
+
     private String image;
+
+    @NotNull
+    @NotEmpty(message = "Vui lòng nhập thông tin chi tiết sản phẩm")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
+
+    @NotNull
+    @NotEmpty(message = "Vui lòng nhập mô tả ngắn chi tiết sản phẩm")
     private String shortDesc;
+
+    @NotNull(message = "Vui lòng nhập số lượng sản phẩm")
+    @Min(value = 1, message = "Tối thiểu có 1 sản phẩm")
     private long quantity;
+
     private long sold;
+
     private String factory;
+
     public String target;
 
     public long getId() {
