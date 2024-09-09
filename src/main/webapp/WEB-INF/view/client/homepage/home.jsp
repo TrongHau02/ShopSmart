@@ -50,10 +50,6 @@
 <jsp:include page="../layout/banner.jsp"/>
 <!-- Hero End -->
 
-<!-- Featurs Section Start -->
-<jsp:include page="../layout/feature.jsp"/>
-<!-- Featurs Section End -->
-
 <!-- Fruits Shop Start-->
 <div class="container-fluid fruite py-5">
     <div class="container py-5">
@@ -109,7 +105,9 @@
                                                  style="top: 10px; left: 10px;">Laptop
                                             </div>
                                             <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                                <h4 style="font-size: 15px;"><a href="<c:url value="/product/${product.id}"/>">${product.name}</a></h4>
+                                                <h4 style="font-size: 15px;"><a
+                                                        href="<c:url value="/product/${product.id}"/>">${product.name}</a>
+                                                </h4>
                                                 <p style="font-size: 13px;">${product.shortDesc}</p>
                                                 <div class="d-flex align-items-center flex-lg-wrap">
                                                     <p class="text-dark fw-bold mb-3"
@@ -134,6 +132,10 @@
     </div>
 </div>
 <!-- Fruits Shop End-->
+
+<!-- Featurs Section Start -->
+<jsp:include page="../layout/feature.jsp"/>
+<!-- Featurs Section End -->
 
 <jsp:include page="../layout/footer.jsp"/>
 
