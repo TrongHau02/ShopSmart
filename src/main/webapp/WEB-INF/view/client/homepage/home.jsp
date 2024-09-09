@@ -103,7 +103,7 @@
                                             <div class="fruite-img">
                                                 <img src="<c:url value="/images/product/${product.image}"/>"
                                                      class="img-fluid w-100 rounded-top"
-                                                     alt="">
+                                                     alt="${product.name}"/>
                                             </div>
                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                                  style="top: 10px; left: 10px;">Laptop
