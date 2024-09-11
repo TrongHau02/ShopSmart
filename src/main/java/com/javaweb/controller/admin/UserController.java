@@ -47,10 +47,10 @@ public class UserController {
     @PostMapping(value = "/admin/user/create")
     public String createUserPage(Model model, @Valid @ModelAttribute("newUser") User newUser,
                                  BindingResult newUserBindingResult, @RequestParam("avatarFile") MultipartFile file) {
-        List<FieldError> errors = newUserBindingResult.getFieldErrors();
+        /*List<FieldError> errors = newUserBindingResult.getFieldErrors();
         for (FieldError error : errors) {
             System.out.println(">>>>>>" + error.getField() + "-" + error.getDefaultMessage());
-        }
+        }*/
 
         if (newUserBindingResult.hasErrors()) {
             return "admin/user/create";

@@ -1,8 +1,18 @@
-package com.javaweb.dto;
+package com.javaweb.domain.dto;
 
+import com.javaweb.service.validator.RegisterChecked;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+
+@RegisterChecked
 public class RegisterDTO {
+    @NotEmpty(message = "Vui lòng nhập First Name")
     private String firstName;
+
+    @NotEmpty(message = "Vui lòng nhập Last Name")
     private String lastName;
+
+    @Email(message = "Email không hợp lệ", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     private String email;
     private String password;
     private String confirmPassword;
