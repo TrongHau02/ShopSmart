@@ -10,4 +10,9 @@ public class LoginController {
     public ModelAndView showLoginPage() {
         return new ModelAndView("auth/login");
     }
+
+    @GetMapping("/access-deny")
+    public String accessDenyPage() {
+        return "auth/accessdeny";
+    }
 }
