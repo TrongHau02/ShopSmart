@@ -70,6 +70,7 @@
                     <div class="col-lg-6">
                         <h4 class="fw-bold mb-3">${productDetail.name}</h4>
                         <p class="mb-3">Hãng sản xuất: ${productDetail.factory}</p>
+                        <p class="mb-3">Mục đích sử dụng: ${productDetail.target}</p>
                         <h5 class="fw-bold mb-3"><fmt:formatNumber type="number" value="${productDetail.price}"/></h5>
                         <div class="d-flex mb-4">
                             <i class="fa fa-star text-secondary"></i>
@@ -78,7 +79,7 @@
                             <i class="fa fa-star text-secondary"></i>
                             <i class="fa fa-star"></i>
                         </div>
-                        <p class="mb-4">${productDetail.shortDesc}</p>
+                        <%--<p class="mb-4">${productDetail.shortDesc}</p>--%>
                         <div class="input-group quantity mb-5" style="width: 100px;">
                             <div class="input-group-btn">
                                 <button class="btn btn-sm btn-minus rounded-circle bg-light border">
