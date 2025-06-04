@@ -65,26 +65,6 @@
                                 <span class="text-dark" style="width: 130px;">All Products</span>
                             </a>
                         </li>
-                        <%--<li class="nav-item">
-                          <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
-                            <span class="text-dark" style="width: 130px;">Vegetables</span>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
-                            <span class="text-dark" style="width: 130px;">Fruits</span>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
-                            <span class="text-dark" style="width: 130px;">Bread</span>
-                          </a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5">
-                            <span class="text-dark" style="width: 130px;">Meat</span>
-                          </a>
-                        </li>--%>
                     </ul>
                 </div>
             </div>
@@ -109,15 +89,20 @@
                                                         href="<c:url value="/product/${product.id}"/>">${product.name}</a>
                                                 </h4>
                                                 <p style="font-size: 13px;">${product.shortDesc}</p>
-                                                <div class="d-flex align-items-center flex-lg-wrap">
+                                                <div class="d-flex justify-content-center flex-lg-wrap">
                                                     <p class="text-dark fw-bold mb-3"
                                                        style="font-size: 15px; text-align: center; width: 100%;">
                                                         <fmt:formatNumber type="number" value="${product.price}"/>
                                                         VNĐ</p>
-                                                    <a href="#"
-                                                       class="mx-auto btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                            class="fa fa-shopping-bag me-2 text-primary"></i>Thêm vào
-                                                        giỏ hàng</a>
+                                                    <form action="/add-product-to-cart/${product.id}" method="post">
+                                                        <input type="hidden" name="${_csrf.parameterName}"
+                                                               value="${_csrf.token}"/>
+                                                        <button class="mx-auto btn border border-secondary rounded-pill px-3 text-primary"
+                                                                type="submit">
+                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i>Thêm vào
+                                                            giỏ hàng
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
