@@ -28,7 +28,12 @@ public class ProductController {
     public String addProductToCart(@PathVariable("id") long productId, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         String email = (String) session.getAttribute("email");
-        this.productService.handleProductAddToCart(email, productId);
+        this.productService.handleProductAddToCart(email, productId, session);
         return "redirect:/";
+    }
+
+    @GetMapping("/cart")
+    public String getCartPage() {
+        return "client/cart/detail";
     }
 }
