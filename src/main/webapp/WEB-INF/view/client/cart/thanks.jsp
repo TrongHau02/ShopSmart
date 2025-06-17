@@ -4,16 +4,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Truy cập bị từ chối</title>
-    <link rel="stylesheet" href="/access_denied/style.css" />
+    <title>Cảm ơn đã đặt hàng</title>
+    <link rel="stylesheet" href="/client/css/thanks.css" />
 </head>
 <body>
-<div class="container" role="alert">
-    <div class="icon" aria-hidden="true">⚠️</div>
-    <h1>Không thể truy cập trang web này</h1>
-    <p>Access Denied</p>
-    <button onclick="history.back()">Quay lại trang trước</button>
-</div>
+<main class="container" role="main" aria-labelledby="thankYouTitle">
+    <h1 id="thankYouTitle">Cảm ơn bạn đã đặt hàng thành công!</h1>
+    <p>Đơn hàng của bạn đã được tiếp nhận và đang được xử lý. Chúng tôi sẽ liên hệ với bạn sớm nhất để xác nhận.</p>
+    <button onclick="location.href='/'" aria-label="Quay lại trang chủ">Quay lại Trang chủ</button>
+</main>
 </body>
 </html>
 

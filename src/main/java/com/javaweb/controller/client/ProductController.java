@@ -46,7 +46,7 @@ public class ProductController {
         List<CartDetail> cartDetails = cart == null ? new ArrayList<>() : cart.getCartDetails();
         double totalPrice = 0;
         for (CartDetail cartDetail : cartDetails) {
-            totalPrice = cartDetail.getPrice() * cartDetail.getQuantity();
+            totalPrice += cartDetail.getPrice() * cartDetail.getQuantity();
         }
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
@@ -97,8 +97,17 @@ public class ProductController {
             @RequestParam("receiverName") String receiverName,
             @RequestParam("receiverAddress") String receiverAddress,
             @RequestParam("receiverPhone") String receiverPhone) {
+        User currentUser = new User();
         HttpSession session = request.getSession(false);
+        long id = (long) session.getAttribute("id");
+        currentUser.setId(id);
+        this.productService.handlePlaceOrder(currentUser, session, receiverName, receiverAddress, receiverPhone);
 
-        return "redirect:/";
+        return "redirect:/thanks";
+    }
+
+    @GetMapping("/thanks")
+    public String getThankYouPage() {
+        return "client/cart/thanks";
     }
 }
