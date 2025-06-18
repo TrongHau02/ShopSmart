@@ -34,7 +34,7 @@
                         <div class="col-md-6 col-12 mx-auto">
                             <h3>Update product with id = ${productUpdate.id}</h3>
                             <hr/>
-                            <form:form action="/admin/product/update" method="POST"
+                            <form:form action="/admin/order/update" method="POST"
                                        modelAttribute="productUpdate" class="row"
                                        enctype="multipart/form-data">
                                 <div class="mb-3" style="display: none">
@@ -90,11 +90,12 @@
                                     </form:select>
                                 </div>
                                 <div class="mb-3 col-12 col-md-6">
-                                    <label class="form-label">Target:</label>
-                                    <form:select class="form-select" path="target">
-                                        <c:forEach var="target" items="${targets}">
-                                            <form:option value="${target.name}">${target.name}</form:option>
-                                        </c:forEach>
+                                    <label class="form-label">Status:</label>
+                                    <form:select class="form-select" path="status">
+                                        <form:option value="PENDING">PENDING</form:option>
+                                        <form:option value="SHIPPING">SHIPPING</form:option>
+                                        <form:option value="COMPLETE">COMPLETE</form:option>
+                                        <form:option value="CANCEL">CANCEL</form:option>
                                     </form:select>
                                 </div>
                                 <div class="mb-3 col-12 col-md-6">
