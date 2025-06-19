@@ -36,7 +36,7 @@ public class ProductController {
     public String addProductToCart(@PathVariable("id") long productId, HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         String email = (String) session.getAttribute("email");
-        this.productService.handleProductAddToCart(email, productId, session);
+        this.productService.handleProductAddToCart(email, productId, session, 1);
         return "redirect:/";
     }
 
@@ -124,5 +124,13 @@ public class ProductController {
         List<Order> orders = this.orderService.fechByUser(currentUser);
         model.addAttribute("orders", orders);
         return "client/cart/order-history";
+    }
+
+    @PostMapping("/add-product-from-view-detail")
+    public String handleAddProductFromViewDetail(@RequestParam("id") long id, @RequestParam("quantity") long quantity, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        String email = (String) session.getAttribute("email");
+        this.productService.handleProductAddToCart(email, id, session, quantity);
+        return "redirect:/product/" + id;
     }
 }
