@@ -2,6 +2,7 @@ package com.javaweb.service;
 
 import com.javaweb.domain.Order;
 import com.javaweb.domain.OrderDetail;
+import com.javaweb.domain.User;
 import com.javaweb.repository.OrderDetailRepository;
 import com.javaweb.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +45,13 @@ public class OrderService {
             }
         }
         this.orderRepository.deleteById(id);
+    }
+
+    public long handleCountOrder() {
+        return this.orderRepository.count();
+    }
+
+    public List<Order> fechByUser(User currentUser) {
+        return this.orderRepository.findByUser(currentUser);
     }
 }

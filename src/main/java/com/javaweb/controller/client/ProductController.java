@@ -2,7 +2,9 @@ package com.javaweb.controller.client;
 
 import com.javaweb.domain.Cart;
 import com.javaweb.domain.CartDetail;
+import com.javaweb.domain.Order;
 import com.javaweb.domain.User;
+import com.javaweb.service.OrderService;
 import com.javaweb.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -16,9 +18,11 @@ import java.util.List;
 @Controller(value = "productControllerOfClient")
 public class ProductController {
     private final ProductService productService;
+    public final OrderService orderService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, OrderService orderService) {
         this.productService = productService;
+        this.orderService = orderService;
     }
 
     @GetMapping(value = "/product/{id}")
@@ -109,5 +113,16 @@ public class ProductController {
     @GetMapping("/thanks")
     public String getThankYouPage() {
         return "client/cart/thanks";
+    }
+
+    @GetMapping("/order-history")
+    public String getOrderHistoryPage(Model model, HttpServletRequest request) {
+        User currentUser = new User();
+        HttpSession session = request.getSession(false);
+        long id = (long) session.getAttribute("id");
+        currentUser.setId(id);
+        List<Order> orders = this.orderService.fechByUser(currentUser);
+        model.addAttribute("orders", orders);
+        return "client/cart/order-history";
     }
 }

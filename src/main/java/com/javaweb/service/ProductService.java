@@ -159,4 +159,8 @@ public class ProductService {
             }
         }
     }
+
+    public long handleCountProduct() {
+        return this.productRepository.count();
+    }
 }
