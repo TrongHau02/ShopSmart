@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="description" content="Hỏi Dân IT - Dự án laptopshop"/>
     <meta name="author" content="Hỏi Dân IT"/>
-    <title>Dashboard - Hỏi Dân IT</title>
+    <title>Dashboard - Táo Shop</title>
     <link href="/css/styles.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -34,7 +34,8 @@
                         <div class="col-12 mx-auto">
                             <div class="d-flex justify-content-between">
                                 <h3>Table Products</h3>
-                                <a href="<c:url value="/admin/product/create"/>" class="btn btn-primary" methods="GET">Create a Product</a>
+                                <a href="/admin/product/create" class="btn btn-primary" methods="GET">Create a
+                                    Product</a>
                             </div>
                             <hr/>
                             <table class="table table-bordered table-hover">
@@ -67,6 +68,23 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"><a class="page-link" href="/admin/product?page=1">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="/admin/product?page=2">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="/admin/product?page=3">3</a></li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
