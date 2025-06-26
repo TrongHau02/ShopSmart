@@ -6,6 +6,9 @@ import com.javaweb.service.RoleService;
 import com.javaweb.service.UploadService;
 import com.javaweb.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -31,9 +35,21 @@ public class UserController {
     }
 
     @GetMapping(value = "/admin/user")
-    public String getUserPage(Model model) {
-        List<User> arrUsers = this.userService.getAllUsers();
-        model.addAttribute("users", arrUsers);
+    public String getUserPage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            } else {
+            }
+        } catch (Exception exception) {
+
+        }
+        Pageable pageable = PageRequest.of(page - 1, 1);
+        Page<User> users = this.userService.getAllUsers(pageable);
+        model.addAttribute("users", users.getContent());
+        model.addAttribute("totalPages", users.getTotalPages());
+        model.addAttribute("currentPage", page);
         return "admin/user/home";
     }
 

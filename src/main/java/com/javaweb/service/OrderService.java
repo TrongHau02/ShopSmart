@@ -6,6 +6,8 @@ import com.javaweb.domain.User;
 import com.javaweb.repository.OrderDetailRepository;
 import com.javaweb.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +20,8 @@ public class OrderService {
     @Autowired
     private OrderDetailRepository orderDetailRepository;
 
-    public List<Order> handleGetAllOrder() {
-        return this.orderRepository.findAll();
+    public Page<Order> handleGetAllOrder(Pageable pageable) {
+        return this.orderRepository.findAll(pageable);
     }
 
     public Order fechById(long id) {

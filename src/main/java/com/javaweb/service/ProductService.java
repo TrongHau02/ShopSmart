@@ -3,6 +3,8 @@ package com.javaweb.service;
 import com.javaweb.domain.*;
 import com.javaweb.repository.*;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,8 +37,8 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public List<Product> findAllProduct() {
-        return this.productRepository.findAll();
+    public Page<Product> findAllProduct(Pageable pageable) {
+        return this.productRepository.findAll(pageable);
     }
 
     public void handleDeleteProduct(long id) {

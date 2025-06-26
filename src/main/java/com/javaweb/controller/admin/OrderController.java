@@ -3,12 +3,14 @@ package com.javaweb.controller.admin;
 import com.javaweb.domain.Order;
 import com.javaweb.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Controller
 public class OrderController {
@@ -16,8 +18,20 @@ public class OrderController {
     private OrderService orderService;
 
     @GetMapping(value = "/admin/order")
-    public String getHomePage(Model model) {
-        model.addAttribute("orders", this.orderService.handleGetAllOrder());
+    public String getHomePage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            }
+        } catch (Exception e) {
+
+        }
+        Pageable pageable = PageRequest.of(page - 1, 2);
+        Page<Order> orders = this.orderService.handleGetAllOrder(pageable);
+        model.addAttribute("orders", orders.getContent());
+        model.addAttribute("totalPages", orders.getTotalPages());
+        model.addAttribute("currentPage", page);
         return "admin/order/home";
     }
 
@@ -31,13 +45,13 @@ public class OrderController {
     @GetMapping("/admin/order/update/{id}")
     public String getUpdateOrderPage(@PathVariable("id") long id, Model model) {
         model.addAttribute("order", this.orderService.fechById(id));
-        return  "admin/order/update";
+        return "admin/order/update";
     }
 
     @PostMapping("/admin/order/update")
     public String updateOrder(@ModelAttribute("order") Order order) {
         Order currentOrder = this.orderService.fechById(order.getId());
-        if(!currentOrder.getStatus().equals(order.getStatus())) {
+        if (!currentOrder.getStatus().equals(order.getStatus())) {
             currentOrder.setStatus(order.getStatus());
             this.orderService.handleSaveUpdate(currentOrder);
         }
