@@ -1,19 +1,20 @@
 package com.javaweb.controller.client;
 
-import com.javaweb.domain.Cart;
-import com.javaweb.domain.CartDetail;
-import com.javaweb.domain.Order;
-import com.javaweb.domain.User;
+import com.javaweb.domain.*;
 import com.javaweb.service.OrderService;
 import com.javaweb.service.ProductService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Controller(value = "productControllerOfClient")
 public class ProductController {
@@ -132,5 +133,24 @@ public class ProductController {
         String email = (String) session.getAttribute("email");
         this.productService.handleProductAddToCart(email, id, session, quantity);
         return "redirect:/product/" + id;
+    }
+
+    @GetMapping("/products")
+    public String getProductPage(Model model, @RequestParam("page") Optional<String> pageOptional) {
+        int page = 1;
+        try {
+            if (pageOptional.isPresent()) {
+                page = Integer.parseInt(pageOptional.get());
+            } else {
+
+            }
+        } catch (Exception e) {
+        }
+        Pageable pageable = PageRequest.of(page - 1, 3);
+        Page<Product> products = this.productService.findAllProduct(pageable);
+        model.addAttribute("products", products.getContent());
+        model.addAttribute("totalPages", products.getTotalPages());
+        model.addAttribute("currentPage", page);
+        return "client/product/home";
     }
 }
